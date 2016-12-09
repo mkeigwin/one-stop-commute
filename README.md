@@ -15,11 +15,8 @@ My aim is to make an hour long commute feel like 10 minute ride.
 So this app aims to combine the last 3 of the commuter's activity into one place, one dashboard to rule them all!.
 
 ## Technology
-- HTML, CSS, JavaScript
+- React Native
 - Node.js for backend
-- Express.js for web framework on Node.js
-- PSQL for the app's database
-- React.js for views
 - Socket.io for real-time communication such as chats and game communication
 - News API to fetch news, catering to the user
 
