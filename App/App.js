@@ -1,27 +1,40 @@
 // require libs
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Toolbar from './Toolbar';
-// import Drawer from './Drawer';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  DrawerLayoutAndroid
+} from 'react-native';
+
 
 export default class App extends Component {
   render() {
     return (
-      <View>
-        <Toolbar />
-        <View style={styles.linebreak}></View>
-        {/*<Drawer />*/}
-        <Text>This is the default page</Text>
-        <Text>Here's how to use the app</Text>
-      </View>
+      <DrawerLayoutAndroid
+        drawerWidth={300}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        drawerLockMode='unlocked'
+        style={{flex: 1, elevation: 16}}
+
+        renderNavigationView={() => {
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}></Text>
+          </View>
+        }}
+      >
+        <Text style={{margin: 10, fontSize: 15, textAlign: 'right'}}>hello</Text>
+        <Text style={{margin: 10, fontSize: 15, textAlign: 'right'}}>world</Text>
+      </DrawerLayoutAndroid>
     );
   }
-}
+} // class
 
-const styles = StyleSheet.create({
-  linebreak: {
-    width: Dimensions.get('window').width,
-    height: 1,
-    backgroundColor: 'red',
-  },
-});
+
+
+/*
+onDrawerSlide={}
+onDrawerOpen={}
+onDrawerClose={}
+onDrawerStateChanged={}
+*/
