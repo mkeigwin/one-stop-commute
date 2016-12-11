@@ -13,7 +13,7 @@ export default class OpenApp extends Component {
     return (
       <TouchableOpacity onPress={this.handleClick}>
         <View style={styles.button}>
-          <Text>Open {this.props.url}</Text>
+          <Text>Open {this.props.title}</Text>
         </View>
       </TouchableOpacity>
     );
