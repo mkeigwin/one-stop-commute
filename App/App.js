@@ -20,12 +20,12 @@ export default class App extends Component {
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
-        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
         drawerLockMode='unlocked'
         style={{flex: 1, elevation: 16, backgroundColor: 'purple'}}
-
         renderNavigationView={() => navigationView}
       >
+        {/* text outside of drawer */}
         <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>hello</Text>
         <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>world</Text>
       </DrawerLayoutAndroid>
@@ -40,4 +40,6 @@ onDrawerSlide={}
 onDrawerOpen={}
 onDrawerClose={}
 onDrawerStateChanged={}
+drawerLockMode={}
+keyboardDismissMode='on-drag' // dismiss keyboard when dragging
 */
