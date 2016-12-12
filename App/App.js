@@ -4,12 +4,17 @@ import {
   View, 
   Text, 
   StyleSheet, 
-  DrawerLayoutAndroid
+  DrawerLayoutAndroid,
+  TouchableOpacity
 } from 'react-native';
 import OpenApp from './OpenApp';
 
 
 export default class App extends Component {
+  onDrawerOpen() {
+
+  }
+
   render() {
     const navigationView = (
       <View style={{flex: 1, backgroundColor: 'orange'}}>
@@ -19,15 +24,20 @@ export default class App extends Component {
 
     return (
       <DrawerLayoutAndroid
+        ref={(drawer) => { return this.drawer = drawer  }}
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
         drawerLockMode='unlocked'
         style={{flex: 1, elevation: 16, backgroundColor: 'purple'}}
         renderNavigationView={() => navigationView}
+        onDrawerOpen={this.onDrawerOpen}
       >
         {/* text outside of drawer */}
         <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>hello</Text>
         <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>world</Text>
+        <TouchableOpacity onPress={() => this.drawer.openDrawer()}>
+          <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>Test Button</Text>
+        </TouchableOpacity>
       </DrawerLayoutAndroid>
     );
   }
@@ -42,4 +52,7 @@ onDrawerClose={}
 onDrawerStateChanged={}
 drawerLockMode={}
 keyboardDismissMode='on-drag' // dismiss keyboard when dragging
+
+
+onPress={this.toggleDrawer()}
 */
