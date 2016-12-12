@@ -48,13 +48,11 @@ export default class App extends Component {
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
         drawerLockMode='unlocked'
-        style={{flex: 1, elevation: 16, backgroundColor: 'purple'}}
+        style={{flex: 1, elevation: 16, backgroundColor: '#F5F5F5'}}
         renderNavigationView={() => navigationView}
         onDrawerOpen={this.onDrawerOpen}
       >
         {/* text outside of drawer */}
-        <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>hello</Text>
-        <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>world</Text>
         <TouchableOpacity onPress={() => this.drawer.openDrawer()}>
           <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>Test Button</Text>
         </TouchableOpacity>
