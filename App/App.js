@@ -8,10 +8,30 @@ import {
   TouchableOpacity
 } from 'react-native';
 import OpenApp from './OpenApp';
-
+import News from './News';
 
 export default class App extends Component {
-  onDrawerOpen() {
+  constructor() {
+    super();
+
+    this.state = {
+      articles: [],
+    };
+  }
+
+  componentWillMount() {
+    this.fetchNewsData();
+  }
+
+  fetchNewsData() {
+    fetch('https://newsapi.org/v1/articles?source=time&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23')
+    .then(r => r.json())
+    .then(data => {
+      this.setState({
+        articles: data.articles,
+      })
+    })
+    .catch(err => console.log('fetch news error', err));
 
   }
 
@@ -24,7 +44,7 @@ export default class App extends Component {
 
     return (
       <DrawerLayoutAndroid
-        ref={(drawer) => { return this.drawer = drawer  }}
+        ref={(drawer) => {this.drawer = drawer}}
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
         drawerLockMode='unlocked'
@@ -38,6 +58,8 @@ export default class App extends Component {
         <TouchableOpacity onPress={() => this.drawer.openDrawer()}>
           <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>Test Button</Text>
         </TouchableOpacity>
+      
+        <News articles={this.state.articles}/>
       </DrawerLayoutAndroid>
     );
   }
@@ -52,7 +74,5 @@ onDrawerClose={}
 onDrawerStateChanged={}
 drawerLockMode={}
 keyboardDismissMode='on-drag' // dismiss keyboard when dragging
-
-
 onPress={this.toggleDrawer()}
 */
