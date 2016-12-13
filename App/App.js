@@ -6,11 +6,16 @@ import {
   StyleSheet, 
   DrawerLayoutAndroid,
   TouchableOpacity,
+  TouchableHighlight,
   ToolbarAndroid,
-  Dimensions
+  Dimensions,
+  Navigator
 } from 'react-native';
+import { Button } from 'react-native-material-design';
+
 import OpenApp from './OpenApp';
 import News from './News';
+import Myscene from './Myscene';
 const hamburgerIcon = 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png';
 
 
@@ -40,39 +45,43 @@ export default class App extends Component {
   }
 
   render() {
+    // Home
     const navigationView = (
       <View style={styles.navView}>
-        <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly NYC Location' style={{margin: 10, fontSize: 25, textAlign: 'left'}}>I'm in the drawer</OpenApp>
+        <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly'>I'm in the drawer</OpenApp>
         <OpenApp url={'fb://notifications'} title='FaceBook'/>
         <OpenApp url={'twitter://user?screen_name=username'} title='Twitter'/>
         <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram'/>
         <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn'/>
-        <Text>Chat Zone</Text>
+        <Button text='Chat Zone' />
       </View>
     );
 
+    const { navState } = this.state;
 
     return (
-      <DrawerLayoutAndroid
-        ref={(drawer) => {this.drawer = drawer}}
-        drawerWidth={300}
-        drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
-        drawerLockMode='unlocked'
-        style={styles.drawerLayout}
-        renderNavigationView={() => navigationView}
-        onDrawerOpen={this.onDrawerOpen}
-      >
 
-        {/* text outside of drawer */}
-        <ToolbarAndroid
-          onIconClicked={() => this.drawer.openDrawer()}
-          style={styles.toolbar}
-          title="One Stop Commute" 
-          navIcon={{uri: hamburgerIcon, height: 31, width: 31}}
-        />
-        <View style={styles.linebreak}></View>
-        <News articles={this.state.articles} refreshNews={this.fetchNewsData.bind(this)}/>
-      </DrawerLayoutAndroid>
+        <DrawerLayoutAndroid
+          ref={(drawer) => {this.drawer = drawer}}
+          drawerWidth={330}
+          drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
+          drawerLockMode='unlocked'
+          style={styles.drawerLayout}
+          renderNavigationView={() => navigationView}
+          onDrawerOpen={this.onDrawerOpen}
+        >
+
+          {/* text outside of drawer */}
+          <ToolbarAndroid
+            onIconClicked={() => this.drawer.openDrawer()}
+            style={styles.toolbar}
+            title="One Stop Commute" 
+            navIcon={{uri: hamburgerIcon, height: 31, width: 31}}
+          />
+          <View style={styles.linebreak}></View>
+          <News articles={this.state.articles} refreshNews={this.fetchNewsData.bind(this)}/>
+        </DrawerLayoutAndroid>
+    
     );
   }
 } // class
@@ -103,3 +112,32 @@ const styles = StyleSheet.create({
     opacity: .5,
   },
 });
+
+/*
+<Navigator
+  initialRoute={routes[0]}
+  initialRouteStack={routes}
+  style={{padding: 100}}
+  renderScene={(route, navigator) => {
+    <TouchableHighlight
+      onPress={() => {
+        (route.index === 0) ? navigator.push(routes[1]) : navigator.pop();
+      }}
+    >
+      <Text>Hello {route.title}!</Text>
+    </TouchableHighlight>
+  }}
+>
+</Navigator>
+*/
+
+/*
+<View style={styles.navView}>
+  <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly NYC Location' style={{margin: 10, fontSize: 25, textAlign: 'left'}}>I'm in the drawer</OpenApp>
+  <OpenApp url={'fb://notifications'} title='FaceBook'/>
+  <OpenApp url={'twitter://user?screen_name=username'} title='Twitter'/>
+  <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram'/>
+  <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn'/>
+  <Text>Chat Zone</Text>
+</View>
+*/

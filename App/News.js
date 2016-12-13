@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   cardBody: {
     // backgroundColor: '#B3E5FC',
     backgroundColor: 'lightgray',
+    margin: 12,
   },
 });
 

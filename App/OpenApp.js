@@ -7,6 +7,7 @@ import {
   View,
   ToastAndroid 
 } from 'react-native';
+import { Button } from 'react-native-material-design';
 
 export default class OpenApp extends Component {
   handleClick = () => {
@@ -18,19 +19,13 @@ export default class OpenApp extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.handleClick}>
-        <View style={styles.button}>
-          <Text>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
+      <Button style={styles.button} text={this.props.title} onPress={this.handleClick}></Button>
     );
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    padding: 10,
-    backgroundColor: '#03A9F4',
-    marginBottom: 3,
+    paddingBottom: 10,
   },
 });
