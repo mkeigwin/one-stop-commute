@@ -61,7 +61,7 @@ export default class App extends Component {
         <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram'/>
         <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn'/>
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          <Image source={{url: 'https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'}} style={{width: 50, height: 50}}/>
+          <Image source={{uri: 'https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'}} style={{width: 50, height: 50}}/>
           <Text>Inline text with icon!</Text>
         </View>
       </View>
