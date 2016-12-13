@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Linking
+  Linking,
+  RefreshControl
 } from 'react-native';
 import {
   Card,
@@ -14,9 +15,15 @@ import {
 } from 'react-native-material-design';
 
 export default class News extends Component {
+  constructor() {
+    super();
+    this.state = {
+      refreshing: false,
+    };
+  }
+
   // open link on the phone's browser
   handClick(url) {
-    // console.log('********** url', url)
     Linking.canOpenURL(url)
     .then(supported => {
       (supported) ? Linking.openURL(url) : console.log('Something went wrong :(')
@@ -28,7 +35,7 @@ export default class News extends Component {
     return this.props.articles.map((article, i) => {
       return (
         <View key={i}>
-          <Card>
+          <Card style={styles.cardBody}>
             <Card.Media
               image={<Image source={{uri: article.urlToImage}} overlay/>}
             />
@@ -46,7 +53,18 @@ export default class News extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView
+        keyboardDismissMode='on-drag'
+        refreshControl={
+          <RefreshControl 
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+              this.setState({refreshing: true});
+              console.log('**** onrefresh');
+              this.props.refreshNews();
+            }}
+        />}
+      >
         {this.renderArticles()}
       </ScrollView>
     );
@@ -60,15 +78,10 @@ const styles = StyleSheet.create({
   },
   articleTitle: {
     fontWeight: 'bold',
-    // textAlign: 'center',
+  },
+  cardBody: {
+    // backgroundColor: '#B3E5FC',
+    backgroundColor: 'lightgray',
   },
 });
 
-/*
-<TouchableOpacity key={i} style={styles.articleView} onPress={() => this.handClick(article.url)}>
-  <Image source={{uri: article.urlToImage}} style={styles.articleImg}/>
-  <Text>{article.title}</Text>
-  <Text>{article.description}</Text>
-  <Text>{article.author}</Text>
-</TouchableOpacity>
-*/

@@ -5,10 +5,14 @@ import {
   Text, 
   StyleSheet, 
   DrawerLayoutAndroid,
-  TouchableOpacity
+  TouchableOpacity,
+  ToolbarAndroid,
+  Dimensions
 } from 'react-native';
 import OpenApp from './OpenApp';
 import News from './News';
+const hamburgerIcon = 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png';
+
 
 export default class App extends Component {
   constructor() {
@@ -24,6 +28,7 @@ export default class App extends Component {
   }
 
   fetchNewsData() {
+    console.log('fetchNewsData')
     fetch('https://newsapi.org/v1/articles?source=time&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23')
     .then(r => r.json())
     .then(data => {
@@ -32,15 +37,15 @@ export default class App extends Component {
       })
     })
     .catch(err => console.log('fetch news error', err));
-
   }
 
   render() {
     const navigationView = (
-      <View style={{flex: 1, backgroundColor: 'orange'}}>
+      <View style={styles.navView}>
         <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly NYC Location' style={{margin: 10, fontSize: 25, textAlign: 'left'}}>I'm in the drawer</OpenApp>
       </View>
     );
+
 
     return (
       <DrawerLayoutAndroid
@@ -48,29 +53,46 @@ export default class App extends Component {
         drawerWidth={300}
         drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
         drawerLockMode='unlocked'
-        style={{flex: 1, elevation: 16, backgroundColor: '#F5F5F5'}}
+        style={styles.drawerLayout}
         renderNavigationView={() => navigationView}
         onDrawerOpen={this.onDrawerOpen}
       >
+
         {/* text outside of drawer */}
-        <TouchableOpacity onPress={() => this.drawer.openDrawer()}>
-          <Text style={{margin: 10, fontSize: 25, textAlign: 'right'}}>Test Button</Text>
-        </TouchableOpacity>
-      
-        <News articles={this.state.articles}/>
+        <ToolbarAndroid
+          onIconClicked={() => this.drawer.openDrawer()}
+          style={styles.toolbar}
+          title="One Stop Commute" 
+          navIcon={{uri: hamburgerIcon, height: 31, width: 31}}
+        />
+        <View style={styles.linebreak}></View>
+        <News articles={this.state.articles} refreshNews={this.fetchNewsData.bind(this)}/>
       </DrawerLayoutAndroid>
     );
   }
 } // class
 
 
-
-/*
-onDrawerSlide={}
-onDrawerOpen={}
-onDrawerClose={}
-onDrawerStateChanged={}
-drawerLockMode={}
-keyboardDismissMode='on-drag' // dismiss keyboard when dragging
-onPress={this.toggleDrawer()}
-*/
+const styles = StyleSheet.create({
+  toolbar: {
+    backgroundColor: '#03A9F4',
+    height: 56,
+    padding: 5,
+  },
+  drawerLayout: {
+    flex: 1, 
+    elevation: 16, 
+    backgroundColor: '#F5F5F5',
+  },
+  navView: {
+    flex: 1, 
+    backgroundColor: '#F5F5F5',
+  },
+  linebreak: {
+    width: Dimensions.get('window').width,
+    backgroundColor: '#F44336',
+    height: 1,
+    padding: 2,
+    opacity: .5,
+  },
+});
