@@ -9,15 +9,19 @@ import {
   TouchableHighlight,
   ToolbarAndroid,
   Dimensions,
-  Navigator
+  Navigator,
+  Image
 } from 'react-native';
 import { Button } from 'react-native-material-design';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import OpenApp from './OpenApp';
 import News from './News';
-import Myscene from './Myscene';
+// const logo-fb       = '../assets/logo-fb.png';
+// const logo-ga       = '../assets/logo-ga.png';
+// const logo-li       = '../assets/logo-li.png';
+// const logo-tw       = '../assets/logo-tw.png';
+// const logo-insta    = '../assets/logo-insta.png';
 const hamburgerIcon = 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png';
-
 
 export default class App extends Component {
   constructor() {
@@ -45,15 +49,21 @@ export default class App extends Component {
   }
 
   render() {
+    // <Text>Lorem <Icon name="twitter" color="#4F8EF7" /> Ipsum</Text>
+
     // Home
     const navigationView = (
       <View style={styles.navView}>
-        <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly'>I'm in the drawer</OpenApp>
-        <OpenApp url={'fb://notifications'} title='FaceBook'/>
-        <OpenApp url={'twitter://user?screen_name=username'} title='Twitter'/>
-        <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram'/>
-        <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn'/>
-        <Button text='Chat Zone' />
+        <View style={styles.navHeader}></View>
+        <OpenApp style={styles.button} url={'geo:40.7398476,-73.99020680000001'} title='General Assembly'>I'm in the drawer</OpenApp>
+        <OpenApp style={styles.button} url={'fb://notifications'} title='FaceBook'/>
+        <OpenApp style={styles.button} url={'twitter://user?screen_name=username'} title='Twitter'/>
+        <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram'/>
+        <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn'/>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <Image source={{url: 'https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'}} style={{width: 50, height: 50}}/>
+          <Text>Inline text with icon!</Text>
+        </View>
       </View>
     );
 
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     // backgroundColor: '#F5F5F5',
     backgroundColor: '#DCEDC8',
-    padding: 10,
+    // padding: 10,
   },
   linebreak: {
     width: Dimensions.get('window').width,
@@ -111,33 +121,21 @@ const styles = StyleSheet.create({
     padding: 2,
     opacity: .5,
   },
+  navHeader: {
+    // margin: -10,
+    height: 200,
+    width: Dimensions.get('window').width,
+    backgroundColor: 'orange',
+  },
+  button: {
+    padding: 20,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    color: 'white',
+  },
+  iconButtonText: {
+    textAlign: 'center',
+    color: 'white',
+    marginLeft: 20,
+  },
 });
-
-/*
-<Navigator
-  initialRoute={routes[0]}
-  initialRouteStack={routes}
-  style={{padding: 100}}
-  renderScene={(route, navigator) => {
-    <TouchableHighlight
-      onPress={() => {
-        (route.index === 0) ? navigator.push(routes[1]) : navigator.pop();
-      }}
-    >
-      <Text>Hello {route.title}!</Text>
-    </TouchableHighlight>
-  }}
->
-</Navigator>
-*/
-
-/*
-<View style={styles.navView}>
-  <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly NYC Location' style={{margin: 10, fontSize: 25, textAlign: 'left'}}>I'm in the drawer</OpenApp>
-  <OpenApp url={'fb://notifications'} title='FaceBook'/>
-  <OpenApp url={'twitter://user?screen_name=username'} title='Twitter'/>
-  <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram'/>
-  <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn'/>
-  <Text>Chat Zone</Text>
-</View>
-*/
