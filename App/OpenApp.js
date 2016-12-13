@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { 
+  Linking, 
+  StyleSheet, 
+  Text, 
+  TouchableOpacity, 
+  View,
+  ToastAndroid 
+} from 'react-native';
 
 export default class OpenApp extends Component {
   handleClick = () => {
     Linking.canOpenURL(this.props.url)
     .then(supported => {
-      (supported) ? Linking.openURL(this.props.url) : console.log('Cannot open URI: ', this.props.url);
+      (supported) ? Linking.openURL(this.props.url) : ToastAndroid.show(`${this.props.title} is not installed`, ToastAndroid.SHORT);
     });
   }
 
@@ -13,7 +20,7 @@ export default class OpenApp extends Component {
     return (
       <TouchableOpacity onPress={this.handleClick}>
         <View style={styles.button}>
-          <Text>Open {this.props.title}</Text>
+          <Text>{this.props.title}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -21,18 +28,9 @@ export default class OpenApp extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 10,
-    paddingTop: 30,
-  },
   button: {
     padding: 10,
-    backgroundColor: '#DCEDC8',
-    marginBottom: 10,
-  },
-  text: {
-    color: 'white',
+    backgroundColor: '#03A9F4',
+    marginBottom: 3,
   },
 });

@@ -43,6 +43,11 @@ export default class App extends Component {
     const navigationView = (
       <View style={styles.navView}>
         <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly NYC Location' style={{margin: 10, fontSize: 25, textAlign: 'left'}}>I'm in the drawer</OpenApp>
+        <OpenApp url={'fb://notifications'} title='FaceBook'/>
+        <OpenApp url={'twitter://user?screen_name=username'} title='Twitter'/>
+        <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram'/>
+        <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn'/>
+        <Text>Chat Zone</Text>
       </View>
     );
 
@@ -86,7 +91,9 @@ const styles = StyleSheet.create({
   },
   navView: {
     flex: 1, 
-    backgroundColor: '#F5F5F5',
+    // backgroundColor: '#F5F5F5',
+    backgroundColor: '#DCEDC8',
+    padding: 10,
   },
   linebreak: {
     width: Dimensions.get('window').width,
