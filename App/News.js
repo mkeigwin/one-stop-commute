@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   Linking,
-  RefreshControl
+  RefreshControl,
+  ToastAndroid
 } from 'react-native';
 import {
   Card,
@@ -44,7 +45,12 @@ export default class News extends Component {
             </Card.Body>
             <Card.Actions>
               <Button text='Read full content' onPress={() => this.handClick(article.url)}/>
-              <TouchableOpacity onPress={() => console.log('*** key', article)} style={styles.floatingBtn}>
+              <TouchableOpacity 
+                style={styles.floatingBtn}
+                onPress={() => {
+                  console.log('*** key', article);
+                  ToastAndroid.show(`Saved`, ToastAndroid.SHORT);
+                  }} >
                 <Text style={styles.floatingBtnText}>+</Text>
               </TouchableOpacity>
             </Card.Actions>
@@ -96,7 +102,8 @@ const styles = StyleSheet.create({
     
     position: 'relative',
     bottom: 8,
-    left: 162,
+    // left: 162,
+    left: 110,
   },
   floatingBtnText: {
     textAlign: 'center',

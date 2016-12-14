@@ -51,9 +51,10 @@ export default class App extends Component {
         <View style={styles.navHeader}></View>
         <OpenApp style={styles.button} url={'geo:40.7398476,-73.99020680000001'} title='General Assembly' imgURL='https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'/>
         <OpenApp style={styles.button} url={'fb://notifications'} title='FaceBook' imgURL='http://storage.googleapis.com/wzukusers/user-20049824/images/56c636270f074CpRLUkT/facebook-logo-png-transparent-background-i12_d200.png'/>
-        <OpenApp style={styles.button} url={'twitter://user?screen_name=username'} title='Twitter' imgURL='http://cloudjockeys.townsquareinteractive.com/files/2015/11/Twitter-bird.png'/>
+        <OpenApp style={styles.button} url={'twitter://user?screen_name=xsangmin'} title='Twitter' imgURL='http://cloudjockeys.townsquareinteractive.com/files/2015/11/Twitter-bird.png'/>
         <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram' imgURL='http://ri2.sierraclub.org/sites/ri.sierraclub.org/files/instagram%20logo%20transparent.png'/>
         <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn' imgURL='http://www.clipartkid.com/images/8/clip-art-is-cookie-cutter-NcXVLO-clipart.png'/>
+
       </View>
     );
 
