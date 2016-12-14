@@ -6,21 +6,15 @@ import {
   StyleSheet, 
   DrawerLayoutAndroid,
   TouchableOpacity,
-  TouchableHighlight,
   ToolbarAndroid,
   Dimensions,
   Navigator,
   Image
 } from 'react-native';
-import { Button } from 'react-native-material-design';
+// import { Button } from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OpenApp from './OpenApp';
 import News from './News';
-// const logo-fb       = '../assets/logo-fb.png';
-// const logo-ga       = '../assets/logo-ga.png';
-// const logo-li       = '../assets/logo-li.png';
-// const logo-tw       = '../assets/logo-tw.png';
-// const logo-insta    = '../assets/logo-insta.png';
 const hamburgerIcon = 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png';
 
 export default class App extends Component {
@@ -55,15 +49,11 @@ export default class App extends Component {
     const navigationView = (
       <View style={styles.navView}>
         <View style={styles.navHeader}></View>
-        <OpenApp style={styles.button} url={'geo:40.7398476,-73.99020680000001'} title='General Assembly'>I'm in the drawer</OpenApp>
-        <OpenApp style={styles.button} url={'fb://notifications'} title='FaceBook'/>
-        <OpenApp style={styles.button} url={'twitter://user?screen_name=username'} title='Twitter'/>
-        <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram'/>
-        <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn'/>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          <Image source={{uri: 'https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'}} style={{width: 50, height: 50}}/>
-          <Text>Inline text with icon!</Text>
-        </View>
+        <OpenApp style={styles.button} url={'geo:40.7398476,-73.99020680000001'} title='General Assembly' imgURL='https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'/>
+        <OpenApp style={styles.button} url={'fb://notifications'} title='FaceBook' imgURL='http://storage.googleapis.com/wzukusers/user-20049824/images/56c636270f074CpRLUkT/facebook-logo-png-transparent-background-i12_d200.png'/>
+        <OpenApp style={styles.button} url={'twitter://user?screen_name=username'} title='Twitter' imgURL='http://cloudjockeys.townsquareinteractive.com/files/2015/11/Twitter-bird.png'/>
+        <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram' imgURL='http://ri2.sierraclub.org/sites/ri.sierraclub.org/files/instagram%20logo%20transparent.png'/>
+        <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn' imgURL='http://www.clipartkid.com/images/8/clip-art-is-cookie-cutter-NcXVLO-clipart.png'/>
       </View>
     );
 
@@ -90,6 +80,7 @@ export default class App extends Component {
           />
           <View style={styles.linebreak}></View>
           <News articles={this.state.articles} refreshNews={this.fetchNewsData.bind(this)}/>
+
         </DrawerLayoutAndroid>
     
     );
@@ -137,5 +128,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     marginLeft: 20,
+  },
+  navText: {
+    justifyContent: 'center',
+    margin: 10,
+    marginLeft: 25,
+    flex: 1,
+    padding: 10,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  navIcon: {
+    width: 30, 
+    height: 30,
+  },
+  navViewRow: {
+    flexDirection: 'row', 
+    flexWrap: 'wrap'
   },
 });

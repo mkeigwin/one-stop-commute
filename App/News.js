@@ -44,8 +44,12 @@ export default class News extends Component {
             </Card.Body>
             <Card.Actions>
               <Button text='Read full content' onPress={() => this.handClick(article.url)}/>
+              <TouchableOpacity onPress={() => console.log('*** key', article)} style={styles.floatingBtn}>
+                <Text style={styles.floatingBtnText}>+</Text>
+              </TouchableOpacity>
             </Card.Actions>
           </Card>
+          
         </View>
       );
     });
@@ -83,6 +87,22 @@ const styles = StyleSheet.create({
     // backgroundColor: '#B3E5FC',
     backgroundColor: 'lightgray',
     margin: 12,
+  },
+  floatingBtn: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'lightblue',
+    borderRadius: 100,
+    
+    position: 'relative',
+    bottom: 8,
+    left: 162,
+  },
+  floatingBtnText: {
+    textAlign: 'center',
+    paddingTop: 5,
+    fontSize: 28,
+    color: 'white'
   },
 });
 

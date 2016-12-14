@@ -8,7 +8,7 @@ import {
   Image,
   ToastAndroid 
 } from 'react-native';
-import { Button } from 'react-native-material-design';
+// import { Button } from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class OpenApp extends Component {
@@ -22,20 +22,33 @@ export default class OpenApp extends Component {
   render() {
     return (
       <View>
-        <Button style={styles.button} text={this.props.title} onPress={this.handleClick}></Button>
+        <TouchableOpacity style={styles.navViewRow} onPress={this.handleClick}>
+          <Image source={{uri: this.props.imgURL}} style={styles.navIcon}/>
+          <Text style={styles.navText}>{this.props.title}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-    alignItems: 'flex-start',
+  navViewRow: {
+    flexDirection: 'row', 
+    flexWrap: 'wrap'
   },
-  logo: {
-    width: 20,
-    height: 20,
-    margin: 5,
+  navText: {
+    justifyContent: 'center',
+    margin: 10,
+    padding: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  navIcon: {
+    width: 30, 
+    height: 30,
+    margin: 15,
+    marginLeft: 25,
+    resizeMode: 'cover',
+    borderRadius: 5,
   },
 });
