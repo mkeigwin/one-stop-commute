@@ -103,7 +103,9 @@ export default class App extends Component {
 
   // access newsapi and fetch 10 latest articles by 'Time' and add to state
   fetchNewsData() {
-    fetch('https://newsapi.org/v1/articles?source=time&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23')
+    const ars = 'ars-technica';
+    const time = 'time';
+    fetch(`https://newsapi.org/v1/articles?source=${ars}&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23`)
     .then(r => r.json())
     .then(data => {
       this.setState({
