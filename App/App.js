@@ -1,21 +1,35 @@
 // require libs
 import React, { Component } from 'react';
 import { 
-  View, 
-  Text, 
+  AsyncStorage,
+  Image,
   StyleSheet, 
-  DrawerLayoutAndroid,
-  TouchableOpacity,
-  ToolbarAndroid,
   Dimensions,
+  DrawerLayoutAndroid,
+  FadeAndroid,
   Navigator,
-  Image
+  ScrollView,
+  Text, 
+  ToastAndroid,
+  ToolbarAndroid,
+  TouchableOpacity,
+  View, 
 } from 'react-native';
-// import { Button } from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OpenApp from './OpenApp';
 import News from './News';
+const logoga        = 'https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png';
+const logofb        = 'http://storage.googleapis.com/wzukusers/user-20049824/images/56c636270f074CpRLUkT/facebook-logo-png-transparent-background-i12_d200.png';
+const logotw        = 'http://cloudjockeys.townsquareinteractive.com/files/2015/11/Twitter-bird.png';
+const logoig        = 'http://ri2.sierraclub.org/sites/ri.sierraclub.org/files/instagram%20logo%20transparent.png';
+const logoli        = 'http://www.clipartkid.com/images/8/clip-art-is-cookie-cutter-NcXVLO-clipart.png';
+const logonw        = 'https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png';
 const hamburgerIcon = 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/menu-alt-512.png';
+const snow          = 'https://cdn4.iconfinder.com/data/icons/outline-2/64/weather-cloud-more-snow-512.png';
+const rain          = 'https://cdn3.iconfinder.com/data/icons/weather-16/256/Rainy_Day-512.png';
+const clear         = 'https://cdn4.iconfinder.com/data/icons/wthr-color/32/sunny-512.png';
+const cloudy        = 'http://megaicons.net/static/img/icons_sizes/8/178/512/weather-partly-cloudy-day-icon.png';
+const STORAGE_NAME  = '@SavedArticles';
 
 export default class App extends Component {
   constructor() {
@@ -23,15 +37,69 @@ export default class App extends Component {
 
     this.state = {
       articles: [],
+      savedArticles: [],
     };
   }
 
-  componentWillMount() {
+  getWeather() {
+    const weatherURL = 'http://api.openweathermap.org/data/2.5/weather?q=New+York&units=imperial&APPID=daae38e3c7816408e5288de01f3a9bfb';
+    fetch(weatherURL)
+    .then(r => r.json())
+    .then(weather => {
+      // console.log(weather);
+      this.setState({location: weather.name});
+      this.setState({temp: weather.main.temp});
+      this.setState({main: weather.weather[0].main.toLowerCase()});
+      // console.log('*** state main', this.state.main)
+    })
+    .catch(err => console.log(err));
+  }
+
+  getWeatherIcon() {
+    const weatherState = this.state.main;
+    switch(weatherState) {
+      case 'snow':
+        return ({uri: snow});
+      case 'rain':
+        return ({uri: rain});
+      case 'cloudy':
+        return ({uri: cloudy});
+      case 'clear':
+        return ({uri: clear});
+    }
+  }
+
+  // using es 2017 asynchronous call to storage
+  async fetchSavedArticles() {
+    try {
+      const savedArticles = await AsyncStorage.getItem(STORAGE_NAME);
+      // if there are saved articles 
+      if (savedArticles !== null) {
+        console.log('***** saved articles', JSON.parse(savedArticles));
+        this.setState({savedArticles});
+      } else {
+        console.log('initialized with no saved articles');
+      } 
+    } catch (error) {
+      console.log('AsyncStorage error', error.message);
+    }
+  };
+
+  componentDidMount() {
     this.fetchNewsData();
+    this.fetchSavedArticles();
+    this.getWeather();
+  }
+
+  // store article
+  // AsyncStorage only allows only type string to be saved
+  saveArticle(article) {
+    // console.log('**** article info', article);
+    AsyncStorage.setItem(STORAGE_NAME, JSON.stringify(article));
   }
 
   fetchNewsData() {
-    console.log('fetchNewsData')
+    // console.log('fetchNewsData')
     fetch('https://newsapi.org/v1/articles?source=time&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23')
     .then(r => r.json())
     .then(data => {
@@ -43,108 +111,139 @@ export default class App extends Component {
   }
 
   render() {
-    // <Text>Lorem <Icon name="twitter" color="#4F8EF7" /> Ipsum</Text>
-
-    // Home
-    const navigationView = (
-      <View style={styles.navView}>
-        <View style={styles.navHeader}></View>
-        <OpenApp style={styles.button} url={'geo:40.7398476,-73.99020680000001'} title='General Assembly' imgURL='https://theproductguy.files.wordpress.com/2011/03/ga_logo_1797.png'/>
-        <OpenApp style={styles.button} url={'fb://notifications'} title='FaceBook' imgURL='http://storage.googleapis.com/wzukusers/user-20049824/images/56c636270f074CpRLUkT/facebook-logo-png-transparent-background-i12_d200.png'/>
-        <OpenApp style={styles.button} url={'twitter://user?screen_name=xsangmin'} title='Twitter' imgURL='http://cloudjockeys.townsquareinteractive.com/files/2015/11/Twitter-bird.png'/>
-        <OpenApp style={styles.button} url={'instagram://user?username={USERNAME}'} title='Instagram' imgURL='http://ri2.sierraclub.org/sites/ri.sierraclub.org/files/instagram%20logo%20transparent.png'/>
-        <OpenApp style={styles.button} url={'linkedin://linkedin.com'} title='LinkedIn' imgURL='http://www.clipartkid.com/images/8/clip-art-is-cookie-cutter-NcXVLO-clipart.png'/>
-
-      </View>
-    );
-
-    const { navState } = this.state;
-
     return (
+      <Navigator
+        ref='navigator'
+        initialRoute={{id: 'drawer'}}
+        configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
+        renderScene={(route, navigator) => {
 
-        <DrawerLayoutAndroid
-          ref={(drawer) => {this.drawer = drawer}}
-          drawerWidth={330}
-          drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
-          drawerLockMode='unlocked'
-          style={styles.drawerLayout}
-          renderNavigationView={() => navigationView}
-          onDrawerOpen={this.onDrawerOpen}
-        >
+          // content for the drawer
+          const navigationView = (
+            <ScrollView style={styles.navView}>
+              <View style={styles.navHeader}>
+                <Text style={styles.weatherLocation}>{this.state.location}</Text>
+                <Image source={{uri: snow}} style={styles.weatherIcon}/>
+                <Text style={styles.weatherTemp}>{this.state.temp} ℉</Text>
+              </View>
+              <View style={styles.linebreak}/>
+              <OpenApp url={'geo:40.7398476,-73.99020680000001'} title='General Assembly' imgURL={logoga}/>
+              <OpenApp url={'fb://notifications'} title='FaceBook' imgURL={logofb}/>
+              <OpenApp url={'twitter://user?screen_name=xsangmin'} title='Twitter' imgURL={logotw}/>
+              <OpenApp url={'instagram://user?username={USERNAME}'} title='Instagram' imgURL={logoig}/>
+              <OpenApp url={'linkedin://linkedin.com'} title='LinkedIn' imgURL={logoli}/>
+              
+              <TouchableOpacity 
+                style={styles.navViewRow} 
+                onPress={() => {
+                  ToastAndroid.show(`Showing Favorite Articles`, ToastAndroid.SHORT);
+                }}>
+                <Image source={{uri: logonw}} style={styles.navIcon}/>
+                <Text style={styles.navText}>Favorites</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          );
 
-          {/* text outside of drawer */}
-          <ToolbarAndroid
-            onIconClicked={() => this.drawer.openDrawer()}
-            style={styles.toolbar}
-            title="One Stop Commute" 
-            navIcon={{uri: hamburgerIcon, height: 31, width: 31}}
-          />
-          <View style={styles.linebreak}></View>
-          <News articles={this.state.articles} refreshNews={this.fetchNewsData.bind(this)}/>
+          return (
+            <DrawerLayoutAndroid
+              ref={(drawer) => {this.drawer = drawer}}
+              drawerWidth={290}
+              drawerPosition={DrawerLayoutAndroid.positions.Left} // slide from left
+              drawerLockMode='unlocked'
+              style={styles.drawerLayout}
+              renderNavigationView={() => navigationView}
+              onDrawerOpen={this.onDrawerOpen}
+            >
+             
+              <ToolbarAndroid
+                onIconClicked={() => this.drawer.openDrawer()}
+                style={styles.toolbar}
+                titleColor='#070600'
+                title="1-Stop Commute" 
+                navIcon={{uri: hamburgerIcon, height: 26, width: 26}}
+              />
+              <View style={styles.linebreak}>
 
-        </DrawerLayoutAndroid>
-    
-    );
+              </View>
+              <News 
+                test='fetch news'
+                articles={this.state.articles} 
+                refreshNews={this.fetchNewsData.bind(this)}
+                saveArticle={this.saveArticle.bind(this)}
+              />
+
+            </DrawerLayoutAndroid>
+          );
+        }}
+      />
+    ); // navigator
   }
 } // class
 
 
 const styles = StyleSheet.create({
   toolbar: {
-    backgroundColor: '#03A9F4',
+    backgroundColor: '#23B5D3',
     height: 56,
     padding: 5,
   },
   drawerLayout: {
     flex: 1, 
     elevation: 16, 
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#DCDCDC',
   },
   navView: {
     flex: 1, 
-    // backgroundColor: '#F5F5F5',
-    backgroundColor: '#DCEDC8',
-    // padding: 10,
+    backgroundColor: '#F7F7FF',
   },
   linebreak: {
     width: Dimensions.get('window').width,
-    backgroundColor: '#F44336',
+    backgroundColor: '#EA526F',
     height: 1,
     padding: 2,
     opacity: .5,
   },
   navHeader: {
-    // margin: -10,
     height: 200,
     width: Dimensions.get('window').width,
-    backgroundColor: 'orange',
-  },
-  button: {
-    padding: 20,
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    color: 'white',
-  },
-  iconButtonText: {
-    textAlign: 'center',
-    color: 'white',
-    marginLeft: 20,
-  },
-  navText: {
-    justifyContent: 'center',
-    margin: 10,
-    marginLeft: 25,
-    flex: 1,
-    padding: 10,
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  navIcon: {
-    width: 30, 
-    height: 30,
+    backgroundColor: '#23B5D3',
   },
   navViewRow: {
     flexDirection: 'row', 
     flexWrap: 'wrap'
   },
+  navText: {
+    justifyContent: 'center',
+    margin: 10,
+    padding: 10,
+    fontSize: 13,
+    fontWeight: 'bold',
+
+  },
+  navIcon: {
+    width: 28, 
+    height: 28,
+    margin: 15,
+    marginLeft: 25,
+    resizeMode: 'cover',
+    borderRadius: 5,
+  },
+  weatherIcon: {
+    height: 80, 
+    width: 140, 
+    resizeMode: 'stretch',
+    marginLeft: 70,
+  },
+  weatherLocation: {
+    fontSize: 14,
+    margin: 10,
+    marginBottom: 20,
+    fontStyle: 'italic',
+  },
+  weatherTemp: {
+    fontSize: 25,
+    marginTop: 25,
+    marginLeft: 175,
+    marginBottom: -20,
+  }
 });

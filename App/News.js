@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
   Image,
   Linking,
   RefreshControl,
-  ToastAndroid
+  ScrollView,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+  WebView,
 } from 'react-native';
 import {
+  Button,
   Card,
-  Button
 } from 'react-native-material-design';
+const favIcon = 'https://cdn3.iconfinder.com/data/icons/fillies-medium/64/star-512.png';
+
 
 export default class News extends Component {
   constructor() {
@@ -27,11 +30,12 @@ export default class News extends Component {
   handClick(url) {
     Linking.canOpenURL(url)
     .then(supported => {
-      (supported) ? Linking.openURL(url) : console.log('Something went wrong :(')
+      (supported) ? Linking.openURL(url) : ToastAndroid.show(`Something went wrong :(`, ToastAndroid.SHORT);
     })
   }
 
   renderArticles() {
+    console.log('*******', this.props.test)
     const articles = this.props.articles;
     return this.props.articles.map((article, i) => {
       return (
@@ -44,18 +48,19 @@ export default class News extends Component {
               <Text style={styles.articleTitle}>{article.title}</Text>
             </Card.Body>
             <Card.Actions>
-              <Button text='Read full content' onPress={() => this.handClick(article.url)}/>
+              <Button primary='#070600' text='Read full content' onPress={() => this.handClick(article.url)}/>
               <TouchableOpacity 
                 style={styles.floatingBtn}
-                onPress={() => {
-                  console.log('*** key', article);
+                onPress={(e) => {
+                  // console.log('*** key', article);
+                  this.props.saveArticle(article);
                   ToastAndroid.show(`Saved`, ToastAndroid.SHORT);
                   }} >
-                <Text style={styles.floatingBtnText}>+</Text>
+                
+                <Image source={{uri: favIcon}} style={styles.floatingBtnIcon}/>
               </TouchableOpacity>
             </Card.Actions>
           </Card>
-          
         </View>
       );
     });
@@ -71,7 +76,7 @@ export default class News extends Component {
             onRefresh={() => {
               this.setState({refreshing: true});
               console.log('**** onrefresh');
-              this.props.refreshNews();
+              this.props.refreshNanimatingews();
             }}
         />}
       >
@@ -82,34 +87,30 @@ export default class News extends Component {
 }
 
 const styles = StyleSheet.create({
-  articleView: {
-    backgroundColor: 'orange',
-    padding: 20,
-  },
   articleTitle: {
     fontWeight: 'bold',
+    color: '#070600',
   },
   cardBody: {
-    // backgroundColor: '#B3E5FC',
-    backgroundColor: 'lightgray',
+    backgroundColor: '#f8f8f8',
     margin: 12,
   },
   floatingBtn: {
     width: 50,
     height: 50,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#23B5D3',
     borderRadius: 100,
     
     position: 'relative',
     bottom: 8,
-    // left: 162,
-    left: 110,
+    left: 162,
+    // left: 110,
   },
-  floatingBtnText: {
-    textAlign: 'center',
-    paddingTop: 5,
-    fontSize: 28,
-    color: 'white'
+  floatingBtnIcon: {
+    width: 20,
+    height: 20,
+    margin: 15,
+    opacity: 0.9,
   },
 });
 

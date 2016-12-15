@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { 
+  Image,
   Linking, 
   StyleSheet, 
   Text, 
+  ToastAndroid, 
   TouchableOpacity, 
   View,
-  Image,
-  ToastAndroid 
 } from 'react-native';
 // import { Button } from 'react-native-material-design';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -40,12 +40,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 10,
     padding: 10,
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   navIcon: {
-    width: 30, 
-    height: 30,
+    width: 28, 
+    height: 28,
     margin: 15,
     marginLeft: 25,
     resizeMode: 'cover',
