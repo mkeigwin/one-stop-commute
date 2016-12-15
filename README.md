@@ -23,3 +23,9 @@ So this app aims to combine the last 3 of the commuter's activity into one place
 ## Challenges
 - Creating small multiplayer game without internet connection
 - First time with React Native
+
+# Unfinished Deliverables
+- Unable to use wireless meshing idea as most SDK are proprietary SDK.
+- Unable to implement chatting due to time constraint. Will work on it after project deadline.
+- Unable to cater news to the user's preference, only fetches "Time" articles
+- Unable to fully implement offline storage with AsyncStorage.

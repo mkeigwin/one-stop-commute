@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class OpenApp extends Component {
+  // check if Linking is supported by the device
   handleClick = () => {
     Linking.canOpenURL(this.props.url)
     .then(supported => {
@@ -20,6 +21,7 @@ export default class OpenApp extends Component {
   }
 
   render() {
+    // render icon and label row for the drawer
     return (
       <View>
         <TouchableOpacity style={styles.navViewRow} onPress={this.handleClick}>

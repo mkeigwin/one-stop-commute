@@ -1,7 +1,7 @@
 // require libs
 import React, { Component } from 'react';
 import { 
-  AsyncStorage,
+  AsyncStorage, 
   Image,
   StyleSheet, 
   Dimensions,
@@ -36,25 +36,26 @@ export default class App extends Component {
     super();
 
     this.state = {
-      articles: [],
-      savedArticles: [],
+      articles: [], // array to hold time articles after fetch
+      savedArticles: [], // array to hold saved articles
     };
   }
 
+  // Access OpenWeatherMap API, set location, temperature, and description as App's state
   getWeather() {
     const weatherURL = 'http://api.openweathermap.org/data/2.5/weather?q=New+York&units=imperial&APPID=daae38e3c7816408e5288de01f3a9bfb';
     fetch(weatherURL)
     .then(r => r.json())
     .then(weather => {
-      // console.log(weather);
+      // access openweathermap api of new york for location, temperature, and weather description
       this.setState({location: weather.name});
       this.setState({temp: weather.main.temp});
       this.setState({main: weather.weather[0].main.toLowerCase()});
-      // console.log('*** state main', this.state.main)
     })
     .catch(err => console.log(err));
   }
 
+  // determines the weather condition and return relevant weather icon
   getWeatherIcon() {
     const weatherState = this.state.main;
     switch(weatherState) {
@@ -69,7 +70,8 @@ export default class App extends Component {
     }
   }
 
-  // using es 2017 asynchronous call to storage
+  // using es 2017 asynchronous call
+  // access AsyncStorage to save articles 
   async fetchSavedArticles() {
     try {
       const savedArticles = await AsyncStorage.getItem(STORAGE_NAME);
@@ -85,21 +87,22 @@ export default class App extends Component {
     }
   };
 
+  // fetch respective data
   componentDidMount() {
     this.fetchNewsData();
     this.fetchSavedArticles();
     this.getWeather();
   }
 
-  // store article
   // AsyncStorage only allows only type string to be saved
+  // store article 
   saveArticle(article) {
     // console.log('**** article info', article);
     AsyncStorage.setItem(STORAGE_NAME, JSON.stringify(article));
   }
 
+  // access newsapi and fetch 10 latest articles by 'Time' and add to state
   fetchNewsData() {
-    // console.log('fetchNewsData')
     fetch('https://newsapi.org/v1/articles?source=time&sortBy=latest&apiKey=4fec1e9b10ef424590660a25f1ab9b23')
     .then(r => r.json())
     .then(data => {
@@ -112,16 +115,17 @@ export default class App extends Component {
 
   render() {
     return (
+      // for navigation through screens
       <Navigator
         ref='navigator'
         initialRoute={{id: 'drawer'}}
-        configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom}
+        configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom} // screen transition using navigator
         renderScene={(route, navigator) => {
 
-          // content for the drawer
+          // content rows for drawer
           const navigationView = (
             <ScrollView style={styles.navView}>
-              <View style={styles.navHeader}>
+              <View style={styles.navHeader}> 
                 <Text style={styles.weatherLocation}>{this.state.location}</Text>
                 <Image source={{uri: snow}} style={styles.weatherIcon}/>
                 <Text style={styles.weatherTemp}>{this.state.temp} ℉</Text>
@@ -145,6 +149,9 @@ export default class App extends Component {
           );
 
           return (
+            // create drawer with weather and social media rows
+            // create toolbar with hamburger icon, opening drawer when icon is pressed
+            // render all 'time' 10 articles
             <DrawerLayoutAndroid
               ref={(drawer) => {this.drawer = drawer}}
               drawerWidth={290}
@@ -154,7 +161,6 @@ export default class App extends Component {
               renderNavigationView={() => navigationView}
               onDrawerOpen={this.onDrawerOpen}
             >
-             
               <ToolbarAndroid
                 onIconClicked={() => this.drawer.openDrawer()}
                 style={styles.toolbar}
@@ -163,7 +169,6 @@ export default class App extends Component {
                 navIcon={{uri: hamburgerIcon, height: 26, width: 26}}
               />
               <View style={styles.linebreak}>
-
               </View>
               <News 
                 test='fetch news'
@@ -171,7 +176,6 @@ export default class App extends Component {
                 refreshNews={this.fetchNewsData.bind(this)}
                 saveArticle={this.saveArticle.bind(this)}
               />
-
             </DrawerLayoutAndroid>
           );
         }}

@@ -26,7 +26,7 @@ export default class News extends Component {
     };
   }
 
-  // open link on the phone's browser
+  // open appropriate app by the url props
   handClick(url) {
     Linking.canOpenURL(url)
     .then(supported => {
@@ -34,8 +34,8 @@ export default class News extends Component {
     })
   }
 
+  // render the latest articles using card design with unique key
   renderArticles() {
-    console.log('*******', this.props.test)
     const articles = this.props.articles;
     return this.props.articles.map((article, i) => {
       return (
@@ -52,7 +52,6 @@ export default class News extends Component {
               <TouchableOpacity 
                 style={styles.floatingBtn}
                 onPress={(e) => {
-                  // console.log('*** key', article);
                   this.props.saveArticle(article);
                   ToastAndroid.show(`Saved`, ToastAndroid.SHORT);
                   }} >
@@ -67,6 +66,7 @@ export default class News extends Component {
   }
 
   render() {
+    // create scrollable container for articles
     return (
       <ScrollView
         keyboardDismissMode='on-drag'
